@@ -20,7 +20,7 @@ const EditProfile = () => {
             setFirstName(users.firstName);
             setLastName(users.lastName);
             setPhotoUrl(users.photoUrl);
-            setAge(Number(users.age) || ""); // Ensure Age is a number
+            setAge(Number(users.age) || "");
             setGender(users.gender);
         }
     }, [users]);
@@ -45,40 +45,34 @@ const EditProfile = () => {
                 age: Age,
                 gender: Gender,
             };
-    
-            console.log('Payload:', payload);
-    
+
             const res = await axios.patch('http://localhost:3000/profile/edit', payload, {
                 withCredentials: true,
             });
-    
-            console.log('Response:', res.data);
-    
-            // Dispatch the updated user data to Redux
+
             dispatch(addUser(res.data));
-    
+
             setFirstName(res.data.firstName);
             setLastName(res.data.lastName);
             setPhotoUrl(res.data.photoUrl);
             setAge(res.data.age);
             setGender(res.data.gender);
-    
+
             setShowToast(true);
         } catch (err) {
-            console.error('Error:', err);
             setError(err.response?.data?.message || 'An unexpected error occurred.');
         }
     };
-    
 
     return (
         <>
-            <div className="flex justify-evenly my-10 mx-10">
-                <div className="card bg-base-300 w-96 shadow-xl">
+            <div className="flex flex-col lg:flex-row lg:justify-evenly my-10 mx-4 lg:mx-10">
+                {/* Edit Profile Form */}
+                <div className="card bg-base-300 w-full lg:w-96 shadow-xl">
                     <div className="card-body">
-                        <h2 className="card-title justify-center">Edit Profile</h2>
+                        <h2 className="card-title justify-center text-lg lg:text-xl">Edit Profile</h2>
                         <div>
-                            <label className="form-control w-full max-w-xs my-2">
+                            <label className="form-control w-full my-2">
                                 <div className="label">
                                     <span className="label-text">First name</span>
                                 </div>
@@ -86,11 +80,11 @@ const EditProfile = () => {
                                     type="text"
                                     value={Firstname}
                                     onChange={(e) => setFirstName(e.target.value)}
-                                    className="input input-bordered w-full max-w-xs"
+                                    className="input input-bordered w-full"
                                 />
                             </label>
 
-                            <label className="form-control w-full max-w-xs my-2">
+                            <label className="form-control w-full my-2">
                                 <div className="label">
                                     <span className="label-text">Last name</span>
                                 </div>
@@ -98,11 +92,11 @@ const EditProfile = () => {
                                     type="text"
                                     value={LastName}
                                     onChange={(e) => setLastName(e.target.value)}
-                                    className="input input-bordered w-full max-w-xs"
+                                    className="input input-bordered w-full"
                                 />
                             </label>
 
-                            <label className="form-control w-full max-w-xs my-2">
+                            <label className="form-control w-full my-2">
                                 <div className="label">
                                     <span className="label-text">Photo URL</span>
                                 </div>
@@ -110,11 +104,11 @@ const EditProfile = () => {
                                     type="text"
                                     value={PhotoUrl}
                                     onChange={(e) => setPhotoUrl(e.target.value)}
-                                    className="input input-bordered w-full max-w-xs"
+                                    className="input input-bordered w-full"
                                 />
                             </label>
 
-                            <label className="form-control w-full max-w-xs my-2">
+                            <label className="form-control w-full my-2">
                                 <div className="label">
                                     <span className="label-text">Age</span>
                                 </div>
@@ -122,11 +116,11 @@ const EditProfile = () => {
                                     type="number"
                                     value={Age}
                                     onChange={(e) => setAge(Number(e.target.value))}
-                                    className="input input-bordered w-full max-w-xs"
+                                    className="input input-bordered w-full"
                                 />
                             </label>
 
-                            <label className="form-control w-full max-w-xs my-2">
+                            <label className="form-control w-full my-2">
                                 <div className="label">
                                     <span className="label-text">Gender</span>
                                 </div>
@@ -134,30 +128,31 @@ const EditProfile = () => {
                                     type="text"
                                     value={Gender}
                                     onChange={(e) => setGender(e.target.value)}
-                                    className="input input-bordered w-full max-w-xs"
+                                    className="input input-bordered w-full"
                                 />
                             </label>
-                            <p className="text-red-500">{Error}</p>
+                            <p className="text-red-500 text-sm">{Error}</p>
                         </div>
 
                         <div className="card-actions justify-center m-2">
-                            <button type="button" className="btn btn-primary" onClick={saveProfile}>
+                            <button type="button" className="btn btn-primary w-full lg:w-auto" onClick={saveProfile}>
                                 Save Profile
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center mx-10 h-[500px] ">
-                    <h2 className="text-2xl font-semibold mb-4">User Info</h2>
-                    <div className="card bg-base-300 shadow-lg p-6 w-80 rounded-lg overflow-hidden hover:shadow-slate-200">
-                        <div className="mb-4 flex flex-col items-center rounded-3xl">
+                {/* User Info Card */}
+                <div className="flex flex-col items-center mt-8 lg:mt-0 lg:mx-10">
+                    <h2 className="text-xl lg:text-2xl font-semibold mb-4">User Info</h2>
+                    <div className="card bg-base-300 shadow-lg p-6 w-full lg:w-80 rounded-lg overflow-hidden hover:shadow-slate-200">
+                        <div className="mb-4 flex flex-col items-center">
                             <img 
                                 src={PhotoUrl} 
                                 alt={`${Firstname} ${LastName}`} 
-                                className="w-44 rounded-3xl h-44 mb-4"
+                                className="w-32 h-32 lg:w-44 lg:h-44 rounded-3xl mb-4"
                             />
-                            <h3 className="text-xl font-bold text-center">{Firstname} {LastName}</h3>
+                            <h3 className="text-lg lg:text-xl font-bold text-center">{Firstname} {LastName}</h3>
                         </div>
                         <div className="space-y-2">
                             <p className="flex justify-between">
