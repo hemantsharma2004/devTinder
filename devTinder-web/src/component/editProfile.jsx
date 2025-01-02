@@ -148,14 +148,14 @@ const EditProfile = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center mx-10 h-[500px]">
+                <div className="flex flex-col items-center mx-10 h-[500px] ">
                     <h2 className="text-2xl font-semibold mb-4">User Info</h2>
-                    <div className="card bg-base-300 shadow-lg p-6 w-80 rounded-lg overflow-hidden">
-                        <div className="mb-4 flex flex-col items-center">
+                    <div className="card bg-base-300 shadow-lg p-6 w-80 rounded-lg overflow-hidden hover:shadow-slate-200">
+                        <div className="mb-4 flex flex-col items-center rounded-3xl">
                             <img 
                                 src={PhotoUrl} 
                                 alt={`${Firstname} ${LastName}`} 
-                                className="w-40 h-44 mb-4"
+                                className="w-44 rounded-3xl h-44 mb-4"
                             />
                             <h3 className="text-xl font-bold text-center">{Firstname} {LastName}</h3>
                         </div>

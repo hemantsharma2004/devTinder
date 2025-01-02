@@ -64,8 +64,8 @@ const Request=()=>{
             <div key={`${firstName}-${lastName}`} className="border p-4 bg-base-300 rounded-lg shadow-md flex flex-col hover:shadow-slate-400 items-center">
               <img
                 alt={`${firstName} ${lastName}`}
-                src={photoUrl}
-                className="w-28 h-28 rounded-full mb-4"
+                src={photoUrl ? photoUrl : "https://th.bing.com/th/id/OIP.3IsXMskZyheEWqtE3Dr7JwHaGe?rs=1&pid=ImgDetMain"}
+                className="w-32 h-32 rounded-full mb-4"
               />
               <h2 className="text-xl font-semibold">{`${firstName} ${lastName}`}</h2>
               <p className="text-gray-600">{`${age} years old`}</p>
