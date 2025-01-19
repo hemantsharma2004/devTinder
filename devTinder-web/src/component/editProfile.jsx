@@ -46,7 +46,7 @@ const EditProfile = () => {
                 gender: Gender,
             };
 
-            const res = await axios.patch('http://localhost:3000/profile/edit', payload, {
+            const res = await axios.patch('/api/profile/edit', payload, {
                 withCredentials: true,
             });
 

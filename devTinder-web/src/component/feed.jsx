@@ -15,7 +15,7 @@ const Feed = () => {
     const handleSendRequest = async (status, userId) => {
         try {
             console.log("Status:", status, "UserId:", userId); 
-            const res = await axios.post(`http://localhost:3000/request/send/${status}/${userId}`, {}, {
+            const res = await axios.post(`/api/request/send/${status}/${userId}`, {}, {
                 withCredentials: true,
             });
             console.log(res);
@@ -28,7 +28,7 @@ const Feed = () => {
     const getFeed = async () => {
         try {
             if (feed && feed.length > 0) return; 
-            const res = await axios.get("http://localhost:3000/feed", {
+            const res = await axios.get("/api/feed", {
                 withCredentials: true,
             });
 

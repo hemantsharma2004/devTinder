@@ -11,7 +11,7 @@ const Request=()=>{
 
      const reviewRequest= async(status , _id)=>{
          try{
-             const res= await axios.post("http://localhost:3000/request/review/"+ status + "/" + _id, {}, {
+             const res= await axios.post("/api/request/review/"+ status + "/" + _id, {}, {
                  withCredentials: true,
              });
              dispatch(removeRequest(_id))
@@ -26,7 +26,7 @@ const Request=()=>{
 
     const fetchRequest= async()=>{ 
             try{
-        const res= await axios.get("http://localhost:3000/user/requests/recieved", {
+        const res= await axios.get("/api/user/requests/recieved", {
              withCredentials: true,
         })
       console.log("get requestr", res.data);
