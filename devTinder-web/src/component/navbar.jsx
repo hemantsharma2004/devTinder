@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("/api/logout", {}, {
+      await axios.post("http://localhost:3000/logout", {}, {
         withCredentials: true,
       });
       dispatch(removeUser()); 

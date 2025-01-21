@@ -10,21 +10,39 @@ const EditProfile = () => {
     const [Firstname, setFirstName] = useState(users?.firstName || "");
     const [LastName, setLastName] = useState(users?.lastName || "");
     const [PhotoUrl, setPhotoUrl] = useState(users?.photoUrl || "");
-    const [Age, setAge] = useState(Number(users?.age) || "");
+    const [Age, setAge] = useState(users?.age !== undefined && users?.age !== null ? users.age : "");
     const [Gender, setGender] = useState(users?.gender || "");
     const [Error, setError] = useState("");
     const [ShowToast, setShowToast] = useState(false);
 
+    // Fetch the latest profile data on component load
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const res = await axios.get("http://localhost:3000/profile", {
+                    withCredentials: true,
+                });
+                dispatch(addUser(res.data)); // Update Redux with the latest user data
+            } catch (err) {
+                console.error("Failed to fetch user profile:", err);
+            }
+        };
+
+        fetchUserProfile();
+    }, [dispatch]);
+
+    // Update local state when Redux user data changes
     useEffect(() => {
         if (users) {
-            setFirstName(users.firstName);
-            setLastName(users.lastName);
-            setPhotoUrl(users.photoUrl);
-            setAge(Number(users.age) || "");
-            setGender(users.gender);
+            setFirstName(users.firstName || "");
+            setLastName(users.lastName || "");
+            setPhotoUrl(users.photoUrl || "");
+            setAge(users?.age !== undefined && users?.age !== null ? users.age : "");
+            setGender(users.gender || "");
         }
     }, [users]);
 
+    // Handle toast display timeout
     useEffect(() => {
         let timeoutId;
         if (ShowToast) {
@@ -35,8 +53,9 @@ const EditProfile = () => {
         return () => clearTimeout(timeoutId);
     }, [ShowToast]);
 
+    // Save profile updates
     const saveProfile = async () => {
-        setError('');
+        setError("");
         try {
             const payload = {
                 firstName: Firstname,
@@ -46,11 +65,12 @@ const EditProfile = () => {
                 gender: Gender,
             };
 
-            const res = await axios.patch('/api/profile/edit', payload, {
+            const res = await axios.patch("http://localhost:3000/profile/edit", payload, {
                 withCredentials: true,
             });
 
-            dispatch(addUser(res.data));
+            console.log(res.data); // Debugging log
+            dispatch(addUser(res.data)); // Update Redux state with the response
 
             setFirstName(res.data.firstName);
             setLastName(res.data.lastName);
@@ -60,7 +80,7 @@ const EditProfile = () => {
 
             setShowToast(true);
         } catch (err) {
-            setError(err.response?.data?.message || 'An unexpected error occurred.');
+            setError(err.response?.data?.message || "An unexpected error occurred.");
         }
     };
 
@@ -115,7 +135,7 @@ const EditProfile = () => {
                                 <input
                                     type="number"
                                     value={Age}
-                                    onChange={(e) => setAge(Number(e.target.value))}
+                                    onChange={(e) => setAge(e.target.value ? Number(e.target.value) : "")}
                                     className="input input-bordered w-full"
                                 />
                             </label>
@@ -147,9 +167,9 @@ const EditProfile = () => {
                     <h2 className="text-xl lg:text-2xl font-semibold mb-4">User Info</h2>
                     <div className="card bg-base-300 shadow-lg p-6 w-full lg:w-80 rounded-lg overflow-hidden hover:shadow-slate-200">
                         <div className="mb-4 flex flex-col items-center">
-                            <img 
-                                src={PhotoUrl} 
-                                alt={`${Firstname} ${LastName}`} 
+                            <img
+                                src={PhotoUrl}
+                                alt={`${Firstname} ${LastName}`}
                                 className="w-32 h-32 lg:w-44 lg:h-44 rounded-3xl mb-4"
                             />
                             <h3 className="text-lg lg:text-xl font-bold text-center">{Firstname} {LastName}</h3>

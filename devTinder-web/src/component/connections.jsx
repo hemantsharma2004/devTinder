@@ -9,7 +9,7 @@ const Connection = () => {
 
   const fetchConnection = async () => {
     try {
-      const res = await axios.get("/api/user/connections", {
+      const res = await axios.get("http://localhost:3000/user/connections", {
         withCredentials: true,
       });
       console.log("Full API response:", res.data.data);
