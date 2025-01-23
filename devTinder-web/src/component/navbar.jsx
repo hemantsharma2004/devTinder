@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:3000/logout", {}, {
+      await axios.post("https://devtinder-backend-2oh0.onrender.com/logout", {}, {
         withCredentials: true,
       });
       dispatch(removeUser()); 

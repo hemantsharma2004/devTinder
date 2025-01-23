@@ -12,7 +12,7 @@ const Body = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/profile/view", {
+      const res = await axios.get("https://devtinder-backend-2oh0.onrender.com/profile/view", {
         withCredentials: true,
       });
       
