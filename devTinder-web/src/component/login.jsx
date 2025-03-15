@@ -5,8 +5,8 @@ import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-
-    const [emailId, setEmailId] = useState("");
+    
+    const [emailId, setEmailId] = useState(""); 
     const [Password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -17,13 +17,15 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleSignup = async () => {
+    const handleSignup = async (e) => {
+        e.preventDefault();
      console.log({ firstName, lastName, age, gender, emailId, Password });
+     let newage = parseInt(age)     
      try {
-         const res = await axios.post("https://devtinder-backend-2oh0.onrender.com/signup", {
+         const res = await axios.post("http://localhost:3000/signup", {
              firstName,
              lastName,
-             age,
+             age:newage,
              gender,
              emailId,
              Password,
@@ -52,15 +54,16 @@ const Login = () => {
  };
  
 
-    const handleClick = async () => {
+    const handleClick = async (e) => {
+        e.preventDefault();
         try {
-            const res = await axios.post("https://devtinder-backend-2oh0.onrender.com/login", {
+            const res = await axios.post("http://localhost:3000/login", {
                 emailId,
                 Password,
             }, { withCredentials: true });
-
+            console.log(res)
             dispatch(addUser(res.data));
-            navigate("/");
+            navigate("/body");
         } catch (err) {
             // Updated error handling to check for response data
             console.error("Login Error:", err.response || err.message);
