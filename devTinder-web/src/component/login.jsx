@@ -22,7 +22,7 @@ const Login = () => {
      console.log({ firstName, lastName, age, gender, emailId, Password });
      let newage = parseInt(age)     
      try {
-         const res = await axios.post("http://localhost:3000/signup", {
+         const res = await axios.post("https://devtinder-backend-2oh0.onrender.com/signup", {
              firstName,
              lastName,
              age:newage,
@@ -57,7 +57,7 @@ const Login = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:3000/login", {
+            const res = await axios.post("https://devtinder-backend-2oh0.onrender.com/login", {
                 emailId,
                 Password,
             }, { withCredentials: true });
