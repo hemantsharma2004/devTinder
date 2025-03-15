@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [emailId, setEmailId] = useState(""); 
-    const [Password, setPassword] = useState("");
+    const [password, setPassword] = useState("");  // Fixed variable name
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [gender, setGender] = useState("");
@@ -15,6 +15,7 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    // Signup Function
     const handleSignup = async (e) => {
         e.preventDefault();
         let newAge = parseInt(age);
@@ -25,21 +26,24 @@ const Login = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ firstName, lastName, age: newAge, gender, emailId, Password }),
+                body: JSON.stringify({ firstName, lastName, age: newAge, gender, emailId, password }),
             });
             
+            const data = await res.json();
             if (!res.ok) {
-                throw new Error("Signup failed");
+                console.error("Signup failed:", data);
+                throw new Error(data.message || "Signup failed. Please try again.");
             }
             
-            const data = await res.json();
             dispatch(addUser(data));
             navigate("/EditProfile");
         } catch (err) {
+            console.error("Signup error:", err);
             setError(err.message || "Signup failed. Please try again.");
         }
     };
 
+    // Login Function
     const handleClick = async (e) => {
         e.preventDefault();
         try {
@@ -49,17 +53,20 @@ const Login = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ emailId, Password }),
+                body: JSON.stringify({ emailId, password }),
             });
-            
-            if (!res.ok) {
-                throw new Error("Invalid email or password");
-            }
-            
+
             const data = await res.json();
+            if (!res.ok) {
+                console.error("Login failed:", data);
+                throw new Error(data.message || "Invalid email or password.");
+            }
+
+            console.log("Login successful:", data);
             dispatch(addUser(data));
             navigate("/body");
         } catch (err) {
+            console.error("Login error:", err);
             setError(err.message || "Invalid email or password. Please try again.");
         }
     };
@@ -74,13 +81,13 @@ const Login = () => {
                             <>
                                 <label className="form-control w-full max-w-xs my-2">
                                     <div className="label">
-                                        <span className="label-text">FirstName</span>
+                                        <span className="label-text">First Name</span>
                                     </div>
                                     <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="input input-bordered w-full max-w-xs" />
                                 </label>
                                 <label className="form-control w-full max-w-xs my-2">
                                     <div className="label">
-                                        <span className="label-text">LastName</span>
+                                        <span className="label-text">Last Name</span>
                                     </div>
                                     <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} className="input input-bordered w-full max-w-xs" />
                                 </label>
@@ -94,30 +101,30 @@ const Login = () => {
                                     <div className="label">
                                         <span className="label-text">Age</span>
                                     </div>
-                                    <input type="text" value={age} onChange={(e) => setAge(e.target.value)} className="input input-bordered w-full max-w-xs" />
+                                    <input type="number" value={age} onChange={(e) => setAge(e.target.value)} className="input input-bordered w-full max-w-xs" />
                                 </label>
                             </>
                         )}
                         <label className="form-control w-full max-w-xs my-2">
                             <div className="label">
-                                <span className="label-text">EmailID</span>
+                                <span className="label-text">Email ID</span>
                             </div>
-                            <input type="text" value={emailId} onChange={(e) => setEmailId(e.target.value)} className="input input-bordered w-full max-w-xs" />
+                            <input type="email" value={emailId} onChange={(e) => setEmailId(e.target.value)} className="input input-bordered w-full max-w-xs" />
                         </label>
                         <label className="form-control w-full max-w-xs my-2">
                             <div className="label">
                                 <span className="label-text">Password</span>
                             </div>
-                            <input type="password" value={Password} onChange={(p) => setPassword(p.target.value)} className="input input-bordered w-full max-w-xs" />
+                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input input-bordered w-full max-w-xs" />
                         </label>
-                        <p className="text-red-500">{error}</p>
+                        {error && <p className="text-red-500">{error}</p>}
                     </div>
                     <div className="card-actions justify-center m-2">
                         <button className="btn btn-primary" onClick={isLogin ? handleClick : handleSignup}>
                             {isLogin ? "LogIn" : "SignUp"}
                         </button>
                     </div>
-                    <p className="text-center mx-auto cursor-pointer" onClick={() => setIsLogin((value) => !value)}>
+                    <p className="text-center mx-auto cursor-pointer" onClick={() => setIsLogin(!isLogin)}>
                         {isLogin ? "New User? Signup here" : "Existing User? Login here"}
                     </p>
                 </div>
