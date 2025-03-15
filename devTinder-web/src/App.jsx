@@ -15,14 +15,14 @@ const App = () => {
     <Provider store={appStore}>
       <Router basename='/'>
         <div className="flex flex-col min-h-screen">
-          <Navbar /> {/* Navbar is outside Routes */}
+          <Navbar /> 
           
           <div className="flex-grow">
             <Routes>
-              {/* Redirect root to the login page */}
+             
               <Route path="/" element={<Navigate to="/login" replace />} />
               
-              {/* Login page route */}
+             
               <Route path="/login" element={<Login />} />
 
               {/* Protected routes for authenticated users */}

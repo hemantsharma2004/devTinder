@@ -10,17 +10,22 @@ const Connection = () => {
     try {
       const res = await fetch("https://devtinder-backend-2oh0.onrender.com/user/connections", {
         method: "GET",
-        credentials: "include",  // Correct way to send cookies
-      });
+        credentials: "include", // Ensure cookies are sent
+        headers: { "Content-Type": "application/json" },
+      }).then(res => res.json()).then(console.log).catch(console.error);
 
       if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
+        throw new Error(`Failed to fetch connections: ${res.status}`);
       }
 
-      const data = await res.json();  // Convert response to JSON
-      console.log("Full API response:", data);
+      const data = await res.json();
+      console.log("Fetched connections:", data);
 
-      dispatch(addConnection(data.data)); // Ensure data structure matches API response
+      if (data && Array.isArray(data.data)) {
+        dispatch(addConnection(data.data));
+      } else {
+        console.error("Unexpected API response format:", data);
+      }
     } catch (err) {
       console.error("Error fetching connections:", err);
     }
@@ -32,7 +37,7 @@ const Connection = () => {
 
   console.log("Redux connections state:", connections);
 
-  if (!connections || connections.length === 0) {
+  if (!Array.isArray(connections) || connections.length === 0) {
     return (
       <div className="flex justify-center items-center h-screen">
         <h1 className="text-2xl text-gray-600">No connections found</h1>
@@ -45,9 +50,7 @@ const Connection = () => {
       <h1 className="text-3xl font-bold text-center mb-8">My Connections</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {connections.map((connection) => {
-          if (!connection) {
-            return null;
-          }
+          if (!connection || !connection._id) return null;
 
           const { firstName, lastName, photoUrl, gender, age } = connection;
 
@@ -55,7 +58,7 @@ const Connection = () => {
             <div key={connection._id} className="border p-4 bg-base-300 rounded-lg shadow-md flex flex-col hover:shadow-slate-400 items-center">
               <img
                 alt={`${firstName} ${lastName}`}
-                src={photoUrl}
+                src={photoUrl || "https://th.bing.com/th/id/OIP.3IsXMskZyheEWqtE3Dr7JwHaGe?rs=1&pid=ImgDetMain"}
                 className="w-28 h-28 rounded-full mb-4"
               />
               <h2 className="text-xl font-semibold">{`${firstName} ${lastName}`}</h2>
