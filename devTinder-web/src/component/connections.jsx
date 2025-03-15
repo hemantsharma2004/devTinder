@@ -1,6 +1,5 @@
-import axios from "axios";
 import { useEffect } from "react";
-import {addConnection} from "../utils/connectionSlice"
+import { addConnection } from "../utils/connectionSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Connection = () => {
@@ -9,23 +8,29 @@ const Connection = () => {
 
   const fetchConnection = async () => {
     try {
-      const res = await axios.get("https://devtinder-backend-2oh0.onrender.com/user/connections", {
-        withCredentials: true,
+      const res = await fetch("https://devtinder-backend-2oh0.onrender.com/user/connections", {
+        method: "GET",
+        credentials: "include",  // Correct way to send cookies
       });
-      console.log("Full API response:", res.data.data);
 
-      dispatch(addConnection(res.data.data));
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
+      const data = await res.json();  // Convert response to JSON
+      console.log("Full API response:", data);
+
+      dispatch(addConnection(data.data)); // Ensure data structure matches API response
     } catch (err) {
-      console.log(err);
+      console.error("Error fetching connections:", err);
     }
   };
 
   useEffect(() => {
     fetchConnection();
   }, []);
-  
-  console.log("Redux connections state:", connections); 
-  
+
+  console.log("Redux connections state:", connections);
 
   if (!connections || connections.length === 0) {
     return (
@@ -40,9 +45,8 @@ const Connection = () => {
       <h1 className="text-3xl font-bold text-center mb-8">My Connections</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {connections.map((connection) => {
-          
           if (!connection) {
-            return null; 
+            return null;
           }
 
           const { firstName, lastName, photoUrl, gender, age } = connection;

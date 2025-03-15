@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addFeed, removeUserFromFeed } from "../utils/feedSlice";
 import { useEffect } from "react";
@@ -15,25 +14,32 @@ const Feed = () => {
     const handleSendRequest = async (status, userId) => {
         try {
             console.log("Status:", status, "UserId:", userId); 
-            const res = await axios.post(`https://devtinder-backend-2oh0.onrender.com/request/send/${status}/${userId}`, {}, {
-                withCredentials: true,
+            const res = await fetch(`https://devtinder-backend-2oh0.onrender.com/request/send/${status}/${userId}`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
             });
-            console.log(res);
+            const data = await res.json();
+            console.log(data);
             dispatch(removeUserFromFeed(userId));
         } catch (err) {
-            console.log("Error:", err.response ? err.response.data : err.message);
+            console.log("Error:", err.message);
         }
     };
 
     const getFeed = async () => {
         try {
             if (feed && feed.length > 0) return; 
-            const res = await axios.get("https://devtinder-backend-2oh0.onrender.com/feed", {
-                withCredentials: true,
+            const res = await fetch("https://devtinder-backend-2oh0.onrender.com/feed", {
+                method: "GET",
+                credentials: "include",
             });
-
-            console.log("Feed fetched:", res.data);  
-            dispatch(addFeed(res.data));
+            const data = await res.json();
+            console.log("Feed fetched:", data);  
+            dispatch(addFeed(data));
         } catch (err) {
             console.error("Something went wrong", err);
         }
@@ -78,6 +84,5 @@ const Feed = () => {
         </div>
     );
 };
-
 
 export default Feed;

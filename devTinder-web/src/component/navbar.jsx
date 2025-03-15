@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { removeUser } from "../utils/userSlice";
 
 const Navbar = () => {
@@ -10,14 +9,19 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("https://devtinder-backend-2oh0.onrender.com/logout", {}, {
-        withCredentials: true,
+      const response = await fetch("https://devtinder-backend-2oh0.onrender.com/logout", {
+        method: "POST",
+        credentials: "include",
       });
-      dispatch(removeUser()); 
+      
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+      
+      dispatch(removeUser());
       navigate("/login");
-       
     } catch (err) {
-      navigate("/error"); 
+      navigate("/error");
     }
   };
 

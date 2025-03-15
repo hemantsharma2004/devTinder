@@ -3,7 +3,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useEffect } from "react";
-import axios from "axios";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -12,7 +11,8 @@ const Body = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("https://devtinder-backend-2oh0.onrender.com/profile/view", {
+      const res = await  fetch("https://devtinder-backend-2oh0.onrender.com/profile/view", {
+        method: "GET",
         withCredentials: true,
       });
       
