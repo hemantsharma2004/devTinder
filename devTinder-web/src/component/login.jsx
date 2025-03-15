@@ -15,7 +15,7 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // Signup Function
+    // 🔹 Signup Function
     const handleSignup = async (e) => {
         e.preventDefault();
         let newAge = parseInt(age);
@@ -30,9 +30,10 @@ const Login = () => {
             });
             
             const data = await res.json();
+            console.log("Signup Response:", data); // ✅ Debugging
+
             if (!res.ok) {
-                console.error("Signup failed:", data);
-                throw new Error(data.message || "Signup failed. Please try again.");
+                throw new Error(data.error || "Signup failed. Please try again.");
             }
             
             dispatch(addUser(data));
@@ -43,7 +44,7 @@ const Login = () => {
         }
     };
 
-    // Login Function
+    // 🔹 Login Function
     const handleClick = async (e) => {
         e.preventDefault();
         try {
@@ -57,12 +58,12 @@ const Login = () => {
             });
 
             const data = await res.json();
+            console.log("Login Response:", data); // ✅ Debugging
+
             if (!res.ok) {
-                console.error("Login failed:", data);
-                throw new Error(data.message || "Invalid email or password.");
+                throw new Error(data.error || "Invalid email or password.");
             }
 
-            console.log("Login successful:", data);
             dispatch(addUser(data));
             navigate("/body");
         } catch (err) {
@@ -124,9 +125,6 @@ const Login = () => {
                             {isLogin ? "LogIn" : "SignUp"}
                         </button>
                     </div>
-                    <p className="text-center mx-auto cursor-pointer" onClick={() => setIsLogin(!isLogin)}>
-                        {isLogin ? "New User? Signup here" : "Existing User? Login here"}
-                    </p>
                 </div>
             </div>
         </div>
