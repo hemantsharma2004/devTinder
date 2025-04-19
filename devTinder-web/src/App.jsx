@@ -9,6 +9,11 @@ import Connection from './component/connections';
 import Request from './component/request';
 import Navbar from './component/navbar'; 
 import Footer from './component/footer';
+import Policy from './component/policy';
+import About from './component/about';
+import Refund from './component/refund';
+import Contact from './component/contact';
+ import Terms from './component/terms';
 
 const App = () => {
   return (
@@ -24,6 +29,12 @@ const App = () => {
               
              
               <Route path="/login" element={<Login />} />
+              <Route path="/policy" element={<Policy />} />   
+              <Route path="/about" element={<About />} />
+              <Route path="/refund" element={<Refund />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/termsandcondition" element={<Terms />} />
+
 
               {/* Protected routes for authenticated users */}
               <Route path="/body" element={<Body />} >
