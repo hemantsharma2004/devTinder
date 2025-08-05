@@ -11,7 +11,7 @@ const Body = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await  fetch("https://devtinder-backend-2oh0.onrender.com/profile/view", {
+      const res = await  fetch("http://localhost:3000/profile/view", {
         method: "GET",
         withCredentials: true,
       });

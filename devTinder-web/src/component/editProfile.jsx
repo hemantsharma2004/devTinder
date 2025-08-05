@@ -17,7 +17,7 @@ const EditProfile = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const res = await fetch("https://devtinder-backend-2oh0.onrender.com/profile", {
+                const res = await fetch("http://localhost:3000/profile", {
                     method: "GET",
                     credentials: "include",
                 });
@@ -67,7 +67,7 @@ const EditProfile = () => {
                 gender: Gender,
             };
 
-            const res = await fetch("https://devtinder-backend-2oh0.onrender.com/profile/edit", {
+            const res = await fetch("http://localhost:3000/profile/edit", {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

@@ -8,7 +8,7 @@ const Request = () => {
 
     const reviewRequest = async (status, _id) => {
         try {
-            const res = await fetch(`https://devtinder-backend-2oh0.onrender.com/request/review/${status}/${_id}`, {
+            const res = await fetch(`http://localhost:3000/request/review/${status}/${_id}`, {
                 method: "POST",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" }
@@ -27,7 +27,7 @@ const Request = () => {
 
     const fetchRequest = async () => {
         try {
-            const res = await fetch("https://devtinder-backend-2oh0.onrender.com/user/requests/recieved", {
+            const res = await fetch("http://localhost:3000/user/requests/recieved", {
                 method: "GET",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" }

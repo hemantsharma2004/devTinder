@@ -8,9 +8,9 @@ const Connection = () => {
 
   const fetchConnection = async () => {
     try {
-      const res = await fetch("https://devtinder-backend-2oh0.onrender.com/user/connections", {
+      const res = await fetch("http://localhost:3000/user/connections", {
         method: "GET",
-        credentials: "include", // Ensures cookies are sent
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -24,7 +24,7 @@ const Connection = () => {
       console.log("Full API response:", data);
 
       if (data && data.data) {
-        dispatch(addConnection(data.data)); // Only dispatch if valid data exists
+        dispatch(addConnection(data.data));
       } else {
         console.warn("No connections found in response.");
       }
@@ -35,7 +35,7 @@ const Connection = () => {
 
   useEffect(() => {
     fetchConnection();
-  }, [dispatch]); // Dependency array ensures proper re-renders
+  }, [dispatch]);
 
   console.log("Redux connections state:", connections);
 
@@ -54,19 +54,51 @@ const Connection = () => {
         {connections.map((connection) => {
           if (!connection) return null;
 
-          const { _id, firstName, lastName, photoUrl, gender, age } = connection;
+          const {
+            _id,
+            firstName,
+            lastName,
+            photoUrl,
+            gender,
+            age,
+            skills,
+            about,
+          } = connection;
 
           return (
-            <div key={_id} className="border p-4 bg-base-300 rounded-lg shadow-md flex flex-col hover:shadow-lg items-center">
+            <div
+              key={_id}
+              className="border p-4 bg-base-300 rounded-lg shadow-md flex flex-col hover:shadow-lg items-center text-center"
+            >
               <img
                 alt={`${firstName} ${lastName}`}
-                src={photoUrl || "/default-avatar.png"} // Fallback image
+                src={photoUrl || "/default-avatar.png"}
                 className="w-28 h-28 rounded-full mb-4 object-cover"
-                onError={(e) => (e.target.src = "/default-avatar.png")} // Handle broken images
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/default-avatar.png";
+                }}
               />
               <h2 className="text-xl font-semibold">{`${firstName} ${lastName}`}</h2>
-              <p className="text-gray-600">{`${age} years old`}</p>
-              <p className="text-gray-500 capitalize">{gender}</p>
+              <p className="text-gray-600">{age ? `${age} years old` : "Age not provided"}</p>
+              <p className="text-gray-500 capitalize">{gender || "Gender not specified"}</p>
+              {about && <p className="text-sm text-gray-700 mt-2 italic">{about}</p>}
+              {skills && skills.length > 0 && (
+                <div className="mt-2">
+                 
+                  <ul className="flex flex-wrap justify-center gap-1 mt-1">
+                    {skills.map((skill, index) => (
+                      <li
+                        key={index}
+                                className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium shadow-sm"
+
+                      >
+                        {skill}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           );
         })}

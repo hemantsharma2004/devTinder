@@ -14,7 +14,7 @@ const Feed = () => {
     const handleSendRequest = async (status, userId) => {
         try {
             console.log("Status:", status, "UserId:", userId); 
-            const res = await fetch(`https://devtinder-backend-2oh0.onrender.com/request/send/${status}/${userId}`, {
+            const res = await fetch(`http://localhost:3000/request/send/${status}/${userId}`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -33,7 +33,7 @@ const Feed = () => {
     const getFeed = async () => {
         try {
             if (feed && feed.length > 0) return; 
-            const res = await fetch("https://devtinder-backend-2oh0.onrender.com/feed", {
+            const res = await fetch("http://localhost:3000/feed", {
                 method: "GET",
                 credentials: "include",
             });

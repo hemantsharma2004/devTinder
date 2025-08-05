@@ -9,7 +9,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("https://devtinder-backend-2oh0.onrender.com/logout", {
+      const response = await fetch("http://localhost:3000/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -18,9 +18,17 @@ const Navbar = () => {
         throw new Error("Logout failed");
       }
       
-      dispatch(removeUser());
-      navigate("/login");
+      const data = await response.json();
+      if (data.message === "Logout successful") {
+        dispatch(removeUser());
+        // Clear any remaining state or local storage if needed
+        localStorage.clear(); // Optional: if you store anything in localStorage
+        navigate("/login", { replace: true });
+      } else {
+        throw new Error("Logout unsuccessful");
+      }
     } catch (err) {
+      console.error("Logout error:", err);
       navigate("/error");
     }
   };
@@ -51,7 +59,8 @@ const Navbar = () => {
               </li>
               <li><Link to="/body/connection">Connections</Link></li>
               <li><Link to="/body/request">Request</Link></li>
-              <li><a onClick={handleLogout}>Logout</a></li>
+              <li><Link to="/body">Feed</Link></li>
+              <li><button onClick={handleLogout}>Logout</button></li>
             </ul>
           </div>
         )}
