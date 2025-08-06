@@ -4,6 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useEffect } from "react";
 
+// When the URL is /body, it renders:
+
+// <Body /> → ✅ always
+
+// and inside <Body />, it will render <Feed /> because of index
+
+// this is my body and in the outlet means its child route and the child toute is feed so inside 
+// the /body the feed page will work because of index
+
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

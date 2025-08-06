@@ -27,7 +27,7 @@ const Request = () => {
 
     const fetchRequest = async () => {
         try {
-            const res = await fetch("http://localhost:3000/user/requests/recieved", {
+            const res = await fetch("http://localhost:3000/user/requests/received", {
                 method: "GET",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" }

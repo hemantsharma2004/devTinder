@@ -14,7 +14,7 @@ import About from "./component/about";
 import Refund from "./component/refund";
 import Contact from "./component/contact";
 import Terms from "./component/terms";
-import Profile from "./component/profile";
+// import Profile from "./component/profile";
 
 const App = () => {
   return (
